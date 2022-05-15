@@ -1,63 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-	
-	<video width="100%" id="video" style="aspect-ratio: 16/9;" controls></video>
+  <pre id="main"></pre>kjhl
+  <script>
+    var log=console.log;
+    var main=document.querySelector("#main");
 
-	<!-- 
-	<script>
-		var log=console.log,vid=document.querySelector("video");
-		fetch('test vid.mp4', { headers: { range: 'bytes=0-567139' } }).then(ret=>{
-			log(ret);
-			return ret.blob();
-		}).then(r=>{
-			log(r);
-			vid.src=URL.createObjectURL(r);
-		})
-	</script> -->
+    var a=new Gyroscope({frequency: 60});
 
+a.addEventListener('reading', show);
+a.start();
 
-<script>
-  const mediaSource = new MediaSource();
-  video.src = URL.createObjectURL(mediaSource);
-  mediaSource.addEventListener('sourceopen', sourceOpen, { once: true });
+    show();
+    log(a);
 
-  function sourceOpen() {
-    URL.revokeObjectURL(video.src);
-    const sourceBuffer = mediaSource.addSourceBuffer('video/mp4; codecs="vp09.00.10.08"');
+    function show() {
 
-    // Fetch beginning of the video by setting the Range HTTP request header.
-    fetch('test vid.mp4', { headers: { range: 'bytes=0-1000' } })
-    .then(response => response.arrayBuffer())
-    .then(data => {
-      sourceBuffer.appendBuffer(data);
-      sourceBuffer.addEventListener('updateend', updateEnd, { once: true });
-    });
-  }
+  console.log("Angular velocity along the X-axis " + a.x);
+  console.log("Angular velocity along the Y-axis " + a.y);
+  console.log("Angular velocity along the Z-axis " + a.z);
 
-  function updateEnd() {
-    // Video is now ready to play!
-    const bufferedSeconds = video.buffered.end(0) - video.buffered.start(0);
-    console.log(`${bufferedSeconds} seconds of video are ready to play.`);
-
-    // Fetch the next segment of video when user starts playing the video.
-    video.addEventListener('playing', fetchNextSegment, { once: true });
-  }
-
-  function fetchNextSegment() {
-    fetch('test vid.mp4', { headers: { range: 'bytes=1000-2000' } })
-    .then(response => response.arrayBuffer())
-    .then(data => {
-      const sourceBuffer = mediaSource.sourceBuffers[0];
-      sourceBuffer.appendBuffer(data);
-      // TODO: Fetch further segment and append it.
-    });
-  }
-</script>
+      main.innerHTML=`kjhk
+x=${a.x}
+y=${a.y}
+z=${a.z}
+      `
+    
+    }
+  </script>
 </body>
 </html>
