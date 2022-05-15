@@ -11,7 +11,7 @@
     var log=console.log;
     var main=document.querySelector("#main");
 
-    var a=new Gyroscope({frequency: 60});
+    var a=new Gyroscope({frequency: 1000});
 
 a.addEventListener('reading', show);
 a.start();
