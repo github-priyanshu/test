@@ -1,0 +1,76 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+}
+.flex{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.c{
+  flex-flow: column;
+}
+.texCen{
+  text-align: center;
+}
+.w100p{
+  width: 100%;
+}
+body{
+  min-height: 100vh;
+  background: #333;
+  color: #fff;
+  font-family: sans-serif;
+  width: 100%;
+  display: flex;align-items: center;justify-content: flex-start;flex-flow: column;
+  overflow: auto !important;
+}
+
+
+
+.pan{
+  width: 100%;
+  max-width: 400px;
+  display: none;
+}
+.pan.active{
+  display: block;
+}
+.show > *,
+.pan > *{
+  margin: 10px 0;
+}
+.pan label{
+  display: block;
+}
+
+textarea{
+  height: 150px;
+}
+
+textarea,
+.pan input[type='text']{
+  width: 100%;
+}
+textarea,
+select,
+button,
+input{
+  display: inline-block;
+  min-height: 35px;
+  background: #444;
+  border: 1px solid #000;
+  padding: 10px;
+  border-radius: 2px;
+  outline: none;
+  color: #fff;
+}
+
+textarea:active,
+select:active,
+button:active,
+input:active{
+  background: #222;
+}
