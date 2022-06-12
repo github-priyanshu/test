@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Change Color with Speech</title>
+</head>
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Nova+Round&display=swap');
+	*{
+		margin: 0;padding: 0;
+		box-sizing: border-box;
+	}
+	.flex{
+		display: flex;
+		align-items: center;justify-content: center;
+	}
+	body{
+		width: 100%;
+		height: 100vh;
+		font-family: "Nova Round";
+		overflow: hidden;
+		background: #111;
+	}
+	h1{
+		font-size: 10em;
+		color: #fff;
+		opacity: .1;
+		pointer-events: none;
+	}
+	#box{
+		position: absolute;
+		transition: transform 0s;
+		--w: 400px;
+		height: var(--w);
+		width: var(--w);
+		left: var(--x);
+		top: var(--y);
+		transform: scale(0);
+	}
+	#box.active{
+		transition: transform 1s;
+		transform: scale(1.0);
+	}
+	#box > *{
+		border-radius: 50%;
+		position: absolute;
+	}
+	#bg{
+		background: #fff;
+		height: var(--w);
+		width: var(--w);
+	}
+	#bg.big{
+		transition: all 1s;
+		transform: scale(10);
+	}
+	#pan{
+		height: calc(var(--w) - 20px);
+		width: calc(var(--w) - 20px);
+		background: #000;
+		text-align: center;
+		color: #fff;
+		font-size: 2em;
+	}
+	#pan.small{
+		transition: all 1s;
+		transform: scale(0);
+	}
+
+</style>
+<body class="flex">
+	<div id="box" class="flex">
+		<div id="bg"></div>
+		<div id="pan" class="flex"></div>
+	</div>
+	<h1>Color Changer</h1>
+
+<script>
+	var log=console.log;
+	function op(e){return document.querySelector(e)}
+	function opp(e){return document.querySelectorAll(e)}
+
+	var done=false,color="black",
+	cols="aqua azure beige bisque black blue brown chocolate coral crimson cyan fuchsia ghostwhite gold goldenrod gray green indigo ivory khaki lavender lime linen magenta maroon moccasin navy olive orange orchid peru pink plum purple red salmon sienna silver snow tan teal thistle tomato turquoise violet white yellow";
+
+	opp("*[id]").forEach(val=>{
+		eval(`var ${val.getAttribute("id")}=op("${val.getAttribute("id")}")`);
+	})
+
+	document.onclick=(e)=>{
+		setBox(e.clientX,e.clientY);
+	}
+
+	var sr=new webkitSpeechRecognition();
+	sr.onresult=e=>{
+		var txt=e.results[0][0].transcript;
+		if(cols.includes(txt)){
+			done=txt;
+			color=txt;
+			speak(`Wow! I got that color. Its ${txt}...`);
+			go(color);
+		}else{
+			error();
+		}
+	}
+	sr.onend=error;
+	function error(){
+		if(!done){
+			done=true;
+			go(color);
+			speak(`Oh no, Unable to guess the color...`);
+		}
+	}
+
+	function setBox(x,y){
+		bg.style.background="#fff"
+		box.style.setProperty("--x",x-200+"px");
+		box.style.setProperty("--y",y-200+"px");
+		box.classList.add("active");
+		speak("Please say out a colour name. I'm listening.")
+		sr.start();
+		done=false;
+	}
+
+	function go(col){
+		bg.style.background=col;
+		setTimeout(()=>{
+			bg.classList.add("big");
+			pan.classList.add("small");
+			setTimeout(()=>{
+				document.body.style.background=col;
+				box.classList.remove("active")
+				bg.classList.remove("big");
+				pan.classList.remove("small");
+			},1000)
+		},1000);
+	}
+
+	function speak(txt,ext=""){
+		pan.innerHTML=txt+ext;
+		var ss=new SpeechSynthesisUtterance(txt);
+		speechSynthesis.speak(ss);
+	}
+
+</script>
+
+</body>
+</html>
