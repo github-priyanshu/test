@@ -23,7 +23,7 @@
 		background: #111;
 	}
 	h1{
-		font-size: 10em;
+		font-size: 12vw;
 		color: #fff;
 		opacity: .1;
 		pointer-events: none;
@@ -93,6 +93,10 @@
 	}
 
 	var sr=new webkitSpeechRecognition();
+	sr.onaudiostart=()=>{
+		speechSynthesis.cancel();
+
+	}
 	sr.onresult=e=>{
 		var txt=e.results[0][0].transcript;
 		if(cols.includes(txt)){
