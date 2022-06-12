@@ -89,7 +89,9 @@
 	})
 
 	document.onclick=(e)=>{
-		setBox(e.clientX,e.clientY);
+		if(!box.classList.contains("active")){
+			setBox(e.clientX,e.clientY);
+		}
 	}
 
 	var sr=new webkitSpeechRecognition();
